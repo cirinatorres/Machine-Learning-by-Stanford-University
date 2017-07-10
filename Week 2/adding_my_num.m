@@ -1,0 +1,1 @@
+function z = adding_my_num(x,y)	z = x + y;end;
