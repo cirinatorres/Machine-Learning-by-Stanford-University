@@ -50,10 +50,10 @@ pause;
 fprintf('Normalizing Features ...\n');
 
 [X mu sigma] = featureNormalize(X);
+fprintf(' x = [%.0f %.0f], y = %.0f \n', [X(1:10,:) y(1:10,:)]');
 
 % Add intercept term to X
 X = [ones(m, 1) X];
-
 
 %% ================ Part 2: Gradient Descent ================
 
@@ -82,18 +82,35 @@ X = [ones(m, 1) X];
 fprintf('Running gradient descent ...\n');
 
 % Choose some alpha value
-alpha = 0.01;
-num_iters = 400;
+alpha = 0.3;
+num_iters = 50;
 
 % Init Theta and Run Gradient Descent 
 theta = zeros(3, 1);
 [theta, J_history] = gradientDescentMulti(X, y, theta, alpha, num_iters);
 
-% Plot the convergence graph
-figure;
-plot(1:numel(J_history), J_history, '-b', 'LineWidth', 2);
-xlabel('Number of iterations');
-ylabel('Cost J');
+% % Plot the convergence graph
+% figure;
+% plot(1:numel(J_history), J_history, '-b', 'LineWidth', 2);
+% xlabel('Number of iterations');
+% ylabel('Cost J');
+
+
+% Overlaying multiple learning rates
+% hold on;
+% % alpha = 0.03 is the best value, thus we keep it
+% alpha = 0.03;
+% num_iters = 350;
+% theta = zeros(3, 1);
+% [theta, J2] = gradientDescentMulti(X, y, theta, alpha, num_iters);
+% plot(1:numel(J2), J2, 'r');
+% alpha = 0.003;
+% num_iters = 350;
+% theta = zeros(3, 1);
+% [theta, J3] = gradientDescentMulti(X, y, theta, alpha, num_iters);
+% plot(1:numel(J3), J3, 'k');
+% pause;
+
 
 % Display gradient descent's result
 fprintf('Theta computed from gradient descent: \n');
@@ -104,8 +121,8 @@ fprintf('\n');
 % ====================== YOUR CODE HERE ======================
 % Recall that the first column of X is all-ones. Thus, it does
 % not need to be normalized.
-price = 0; % You should change this
-
+H = [1, 1650, 3];
+price = [H(1), (H(:,2:end) .- mu) ./sigma] * theta;
 
 % ============================================================
 

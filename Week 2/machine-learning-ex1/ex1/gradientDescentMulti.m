@@ -17,14 +17,14 @@ for iter = 1:num_iters
     %       of the cost function (computeCostMulti) and gradient here.
     %
 
+    theta_aux = []; % aux array to temporarely store theta
 
-
-
-
-
-
-
-
+    for t = 1:length(theta)
+        temp = theta(t) - alpha*1/m*sum((X*theta - y).*X(:,t));
+        theta_aux = [theta_aux; temp];
+    end;
+    
+    theta = theta_aux;
 
 
     % ============================================================
@@ -32,6 +32,6 @@ for iter = 1:num_iters
     % Save the cost J in every iteration    
     J_history(iter) = computeCostMulti(X, y, theta);
 
-end
+end;
 
-end
+end;
