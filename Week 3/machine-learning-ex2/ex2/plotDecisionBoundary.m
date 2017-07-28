@@ -44,5 +44,4 @@ else
     contour(u, v, z, [0, 0], 'LineWidth', 2)
 end
 hold off
-
 end
