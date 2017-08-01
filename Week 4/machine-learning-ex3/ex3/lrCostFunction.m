@@ -36,8 +36,9 @@ function [J, grad] = lrCostFunction(theta, X, y, lambda)
 	%
 	J = (1/m)*sum(-y'*log(sigmoid(X*theta)) - (1-y')*log(1-sigmoid(X*theta)));
 	grad = (1/m)*X'*(sigmoid(X*theta) - y);
-	J += (lambda/(2*m))*sum(grad(2:end).^2);
-	grad = [grad(1); grad(2:end).+((lambda/m).*grad(2:end))];
+
+	J += (lambda/(2*m))*sum(theta(2:end).^2);
+	grad = [grad(1); grad(2:end).+((lambda/m).*theta(2:end))];
 	% =============================================================
 
 	grad = grad(:);
