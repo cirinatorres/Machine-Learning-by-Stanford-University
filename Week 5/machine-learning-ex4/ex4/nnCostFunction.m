@@ -56,9 +56,8 @@ function [J grad] = nnCostFunction(nn_params, input_layer_size, hidden_layer_siz
 	%               and Theta2_grad from Part 2.
 	%
 	% -------------------------------------------------------------
-	X = [ones(m,1) X];
-
-	a2 = [ones(m,1) sigmoid(X*Theta1')];
+	a1 = [ones(m,1) X];
+	a2 = [ones(m,1) sigmoid(a1*Theta1')];
 	a3 = sigmoid(a2*Theta2');
 	
 	aux_y = zeros(m,num_labels);
@@ -66,16 +65,15 @@ function [J grad] = nnCostFunction(nn_params, input_layer_size, hidden_layer_siz
 		aux_y(i,y(i)) = 1;
 	end;
 
-	d3 = a3-aux_y;
-	d2 = (Theta2'*d3').*(a2.*(1-a2))';
-	D1 = d2*X;
-	D2 = d3'*a2;
+	d3 = (a3 - aux_y)';
+	d2 = (Theta2'*d3).*(a2.*(1-a2))';
+	D1 = d2*a1;
+	D2 = d3*a2;
 
-	Theta1_grad(:,1:1) = (1/m)*D1(:,1:1);
-	Theta1_grad(:,2:end) = (1/m)*D1(:,2:end) + Theta1;
-	
-	% Theta2_grad(:,1:1) = (1/m)*D2(:,1:1);
-	% Theta2_grad(:,2:end) = (1/m)*D2(:,2:end) + Theta2(:,2:end);
+	Theta1_grad(:,1:1) = (1/m).*D1(2:end,1:1);
+	Theta2_grad(:,1:1) = (1/m).*D2(1:end,1:1);
+	Theta1_grad(:,2:end) = (1/m).*D1(2:end,2:end) .+ lambda.*Theta1(:,2:end);
+	Theta2_grad(:,2:end) = (1/m).*D2(1:end,2:end) .+ lambda.*Theta2(:,2:end);
 
 	for i = 1:m
 		J += sum(-aux_y(i,:)*log(a3(i,:)') -(1-aux_y(i,:))*log(1-a3(i,:)'));
