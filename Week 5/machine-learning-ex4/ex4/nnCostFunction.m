@@ -56,32 +56,35 @@ function [J grad] = nnCostFunction(nn_params, input_layer_size, hidden_layer_siz
 	%               and Theta2_grad from Part 2.
 	%
 	% -------------------------------------------------------------
-	a1 = [ones(m,1) X];
-	a2 = [ones(m,1) sigmoid(a1*Theta1')];
-	a3 = sigmoid(a2*Theta2');
+	a_1 = [ones(m,1) X];
+	z_2 = a_1*Theta1';
+	a_2 = [ones(m,1) sigmoid(z_2)];
+	z_3 = a_2*Theta2';
+	a_3 = sigmoid(z_3);
 	
 	aux_y = zeros(m,num_labels);
 	for i = 1:m
 		aux_y(i,y(i)) = 1;
 	end;
 
-	d3 = (a3 - aux_y)';
-	d2 = (Theta2'*d3).*(a2.*(1-a2))';
-	D1 = d2*a1;
-	D2 = d3*a2;
+	delta_3 = (a_3 - aux_y)';
+	delta_2 = (Theta2'*delta_3).*[ones(m,1) sigmoidGradient(z_2)]';
 
-	Theta1_grad(:,1:1) = (1/m).*D1(2:end,1:1);
-	Theta2_grad(:,1:1) = (1/m).*D2(1:end,1:1);
-	Theta1_grad(:,2:end) = (1/m).*D1(2:end,2:end) .+ lambda.*Theta1(:,2:end);
-	Theta2_grad(:,2:end) = (1/m).*D2(1:end,2:end) .+ lambda.*Theta2(:,2:end);
+	acc_Grad_1 = delta_2*a_1;
+	acc_Grad_2 = delta_3*a_2;
+	
+	Theta1_grad(:,1:1) = (1/m).*acc_Grad_1(2:end,1:1);
+	Theta1_grad(:,2:end) = (1/m).*acc_Grad_1(2:end,2:end) .+ (lambda/m).*Theta1(:,2:end);
+	
+	Theta2_grad(:,1:1) = (1/m).*acc_Grad_2(:,1:1);
+	Theta2_grad(:,2:end) = (1/m).*acc_Grad_2(:,2:end) .+ (lambda/m).*Theta2(:,2:end);
 
 	for i = 1:m
-		J += sum(-aux_y(i,:)*log(a3(i,:)') -(1-aux_y(i,:))*log(1-a3(i,:)'));
+		J += sum(-aux_y(i,:)*log(a_3(i,:)') -(1-aux_y(i,:))*log(1-a_3(i,:)'));
 	end;
 	J *= (1/m);
-
-	% =========================================================================
-
+	J += (lambda/(2*m))*(sum(Theta1(:,2:end)(:).^2)+sum(Theta2(:,2:end)(:).^2));
+	% =========================================================================	
 	% Unroll gradients
 	grad = [Theta1_grad(:) ; Theta2_grad(:)];
 end;
