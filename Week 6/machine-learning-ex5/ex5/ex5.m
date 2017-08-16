@@ -82,16 +82,16 @@ fprintf('\n');
 lambda = 0;
 [theta] = trainLinearReg([ones(m, 1) X], y, lambda);
 
-%  Plot fit over the data
-plot(X, y, 'rx', 'MarkerSize', 10, 'LineWidth', 1.5);
-xlabel('Change in water level (x)');
-ylabel('Water flowing out of the dam (y)');
-hold on;
-plot(X, [ones(m, 1) X]*theta, '--', 'LineWidth', 2)
-hold off;
+% %  Plot fit over the data
+% plot(X, y, 'rx', 'MarkerSize', 10, 'LineWidth', 1.5);
+% xlabel('Change in water level (x)');
+% ylabel('Water flowing out of the dam (y)');
+% hold on;
+% plot(X, [ones(m, 1) X]*theta, '--', 'LineWidth', 2)
+% hold off;
 
-fprintf('Program paused. Press enter to continue.\n');
-pause;
+% fprintf('Program paused. Press enter to continue.\n');
+% pause;
 fprintf('\n');
 %% =========== Part 5: Learning Curve for Linear Regression =============
 %  Next, you should implement the learningCurve function. 
@@ -101,10 +101,7 @@ fprintf('\n');
 %
 
 lambda = 0;
-[error_train, error_val] = ...
-    learningCurve([ones(m, 1) X], y, ...
-                  [ones(size(Xval, 1), 1) Xval], yval, ...
-                  lambda);
+[error_train, error_val] = learningCurve([ones(m, 1) X], y, [ones(size(Xval, 1), 1) Xval], yval, lambda);
 
 plot(1:m, error_train, 1:m, error_val);
 title('Learning curve for linear regression')
