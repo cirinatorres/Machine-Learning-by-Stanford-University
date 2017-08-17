@@ -103,21 +103,22 @@ fprintf('\n');
 lambda = 0;
 [error_train, error_val] = learningCurve([ones(m, 1) X], y, [ones(size(Xval, 1), 1) Xval], yval, lambda);
 
-plot(1:m, error_train, 1:m, error_val);
-title('Learning curve for linear regression')
-legend('Train', 'Cross Validation')
-xlabel('Number of training examples')
-ylabel('Error')
-axis([0 13 0 150])
+% plot(1:m, error_train, 1:m, error_val);
+% title('Learning curve for linear regression')
+% legend('Train', 'Cross Validation')
+% xlabel('Number of training examples')
+% ylabel('Error')
+% axis([0 13 0 150])
 
-fprintf('# Training Examples\tTrain Error\tCross Validation Error\n');
-for i = 1:m
-    fprintf('  \t%d\t\t%f\t%f\n', i, error_train(i), error_val(i));
-end
+% fprintf('# Training Examples\tTrain Error\tCross Validation Error\n');
+% for i = 1:m
+%     fprintf('  \t%d\t\t%f\t%f\n', i, error_train(i), error_val(i));
+% end
 
-fprintf('Program paused. Press enter to continue.\n');
-pause;
-fprintf('\n');
+% fprintf('Program paused. Press enter to continue.\n');
+% pause;
+% fprintf('\n');
+
 %% =========== Part 6: Feature Mapping for Polynomial Regression =============
 %  One solution to this is to use polynomial regression. You should now
 %  complete polyFeatures to map each example into its powers
@@ -154,8 +155,8 @@ fprintf('\n');
 %  lambda = 0. You should try running the code with different values of
 %  lambda to see how the fit and learning curve change.
 %
-
-lambda = 0;
+lambda = 2.8;
+fprintf('Lambda = %f\n', lambda);
 [theta] = trainLinearReg(X_poly, y, lambda);
 
 % Plot training data and fit
@@ -167,8 +168,7 @@ ylabel('Water flowing out of the dam (y)');
 title (sprintf('Polynomial Regression Fit (lambda = %f)', lambda));
 
 figure(2);
-[error_train, error_val] = ...
-    learningCurve(X_poly, y, X_poly_val, yval, lambda);
+[error_train, error_val] = learningCurve(X_poly, y, X_poly_val, yval, lambda);
 plot(1:m, error_train, 1:m, error_val);
 
 title(sprintf('Polynomial Regression Learning Curve (lambda = %f)', lambda));
@@ -192,8 +192,7 @@ fprintf('\n');
 %  "best" lambda value.
 %
 
-[lambda_vec, error_train, error_val] = ...
-    validationCurve(X_poly, y, X_poly_val, yval);
+[lambda_vec, error_train, error_val] = validationCurve(X_poly, y, X_poly_val, yval);
 
 close all;
 plot(lambda_vec, error_train, lambda_vec, error_val);
@@ -203,8 +202,7 @@ ylabel('Error');
 
 fprintf('lambda\t\tTrain Error\tValidation Error\n');
 for i = 1:length(lambda_vec)
-	fprintf(' %f\t%f\t%f\n', ...
-            lambda_vec(i), error_train(i), error_val(i));
+	fprintf(' %f\t%f\t%f\n', lambda_vec(i), error_train(i), error_val(i));
 end
 
 fprintf('Program paused. Press enter to continue.\n');
