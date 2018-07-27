@@ -1,10 +1,9 @@
 function X_rec = recoverData(Z, U, K)
-%RECOVERDATA Recovers an approximation of the original data when using the 
-%projected data
-%   X_rec = RECOVERDATA(Z, U, K) recovers an approximation the 
-%   original data that has been reduced to K dimensions. It returns the
-%   approximate reconstruction in X_rec.
-%
+% RECOVERDATA Recovers an approximation of the original data when using the 
+% projected data
+% X_rec = RECOVERDATA(Z, U, K) recovers an approximation the 
+% original data that has been reduced to K dimensions. It returns the
+% approximate reconstruction in X_rec.
 
 % You need to return the following variables correctly.
 X_rec = zeros(size(Z, 1), size(U, 1));
@@ -21,7 +20,13 @@ X_rec = zeros(size(Z, 1), size(U, 1));
 %               Notice that U(j, 1:K) is a row vector.
 %               
 
-
+for z = 1 : size(Z,1)
+	for u = 1 : size(U,1)
+		example = Z(z, :)';
+		recovered_k = example' * U(u, 1:K)';
+		X_rec(z, u) = recovered_k;
+	end
+end
 
 % =============================================================
 
